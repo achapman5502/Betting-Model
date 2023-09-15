@@ -12,13 +12,10 @@ def convert_american_to_decimal(american_odds):
     return round(decimal_odds, 2)
 
 def convert_decimal_to_american(decimal_odds):
-    if isinstance(decimal_odds, pd.Series):
-        american_odds = decimal_odds.apply(lambda odds: convert_decimal_to_american(odds))
+    if decimal_odds >= 2.0:
+        american_odds = round((decimal_odds - 1) * 100)
     else:
-        if decimal_odds >= 2.0:
-            american_odds = round((decimal_odds - 1) * 100)
-        else:
-            american_odds = round(-100 / (decimal_odds - 1))
+        american_odds = round(-100 / (decimal_odds - 1))
     return american_odds
 
 dataUbet = pd.read_csv('ubet_props.csv')
